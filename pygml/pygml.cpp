@@ -82,10 +82,9 @@ GMEXPORT double _python_run_file(char* cbuf, char* module, char* callable, char*
     }
     catch (py::error_already_set& e) {
         // Return exception and traceback as a string
-        std::string exc = e.what();
-        const char* cstr = exc.c_str();
+        const char* exc = e.what();
         std::cout << exc;
-        b.write(cstr);
+        b.write_string(exc);
         return -1;
     }
 

@@ -1,10 +1,29 @@
 import math
+import random
 
-print(math.sqrt(36))
+print("Hello from Python!")
 
-print(2/0)
+def get_bool():
+	return random.choice([True, False])
 
-print("I'm working!")
-	
+def get_int():
+	return random.randrange(100)
+
+def get_float():
+	return random.random()
+
+def get_string():
+	words = "The quick brown fox jumps over the lazy dog".split(" ")
+	return random.choice(words)
+
+def get_list():
+	return list(range(10))
+
+def exception():
+	print(2/0)
+
 def sum(a, b):
-	return int(a + b)
+	return a + b
+
+def sqrt(x):
+	return math.sqrt(x)

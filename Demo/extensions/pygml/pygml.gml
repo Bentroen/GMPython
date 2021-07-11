@@ -4,10 +4,10 @@ var _size = argument0;
 gml_pragma("global", "global.__python_buffer = undefined");
 var _buf = global.__python_buffer;
 if (_buf == undefined) {
-    _buf = buffer_create(_size, buffer_grow, 1);
-    global.__python_buffer = _buf;
+	_buf = buffer_create(_size, buffer_grow, 1);
+	global.__python_buffer = _buf;
 } else if (buffer_get_size(_buf) < _size) {
-    buffer_resize(_buf, _size);
+	buffer_resize(_buf, _size);
 }
 buffer_seek(_buf, buffer_seek_start, 0);
 return _buf;
@@ -23,11 +23,10 @@ var ret = _python_run_file(buffer_get_address(_buf), module, obj, args);
 switch (ret) {
 	case -1: // Python exception
 		var exc = buffer_read(_buf, buffer_string);
-        throw exc;
-        return;
+		throw exc;
 	case 0: // Couldn't run function
 		show_message("Module " + module + " couldn't be loaded!");
-        return;
+		return;
 	case 1: // None
 		return noone;
 	case 2: // bool

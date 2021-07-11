@@ -34,8 +34,8 @@ switch (ret) {
 		return buffer_read(_buf, buffer_bool);
 	case 3: // int
 		return buffer_read(_buf, buffer_s32);
-    case 4: // float
-        return buffer_read(_buf, buffer_f64); // f64 = double (python float), f32 = float
+	case 4: // float
+		return buffer_read(_buf, buffer_f64); // f64 = double (python float), f32 = float
 	case 100: // str
 		return buffer_read(_buf, buffer_string);
 	default: // anything else

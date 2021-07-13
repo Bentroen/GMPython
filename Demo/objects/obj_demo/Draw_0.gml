@@ -1,6 +1,6 @@
 // Draw info
-draw_text(200, 100, "pygml demo")
-draw_text(200, 120, "by Bentroen")
+draw_text(200, 100, "pygml demo");
+draw_text(200, 120, "by Bentroen");
 
 draw_text(100, 200, "Commands:");
 draw_text(200, 220, "Press F1 to open the demo module");
@@ -10,9 +10,9 @@ draw_text(200, 260, "Press Enter to run Python call");
 // Draw input boxes
 for (var i = 0; i < 4; i++) {
 	if (sel == i) {
-		draw_set_color(c_aqua)
+		draw_set_color(c_aqua);
 	} else {
-		draw_set_color(c_white)
+		draw_set_color(c_white);
 	}
 	var xx = 100;
 	var yy = 350 + 50 * i;
@@ -27,7 +27,7 @@ for (var i = 0; i < 4; i++) {
 
 // Detect key presses
 if (keyboard_check_pressed(vk_backspace)) {
-	values[sel] = string_delete(values[sel], string_length(values[sel]), 1)
+	values[sel] = string_delete(values[sel], string_length(values[sel]), 1);
 }
 if (keyboard_lastkey != -1) {
 	if (string_pos(keyboard_lastchar, chars) != 0) {
@@ -44,7 +44,7 @@ if (sel > 3) sel = 0;
 
 // Open demo Python module
 if (keyboard_check_pressed(vk_f1)) {
-	url_open(working_directory + "demo.py")
+	url_open(working_directory + "demo.py");
 }
 
 // Run Python file

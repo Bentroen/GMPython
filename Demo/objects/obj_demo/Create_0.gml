@@ -1,8 +1,8 @@
 window_set_caption("pygml demo");
 
-chars = " !\"#$%&'()*+,-./01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
 fields = ["Module", "Function", "Args"];
 values = ["demo", "sum", "2, 3"];
+chars = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
 sel = 0;
 
 result = undefined;

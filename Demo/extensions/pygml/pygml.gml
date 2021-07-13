@@ -18,8 +18,34 @@ return _buf;
 var module = argument0;
 var obj = argument1;
 var args = argument2;
-var _buf = _python_prepare_buffer(800);
-var ret = _python_run_file(buffer_get_address(_buf), module, obj, args);
+var kwargs = argument3;
+
+// Serialize arguments to JSON string
+var args_str = "", kwargs_str = "";
+if (args != undefined) {
+	if (is_array(args)) {
+		args_str = json_stringify(args);
+	} else {
+		args_str = "[" + string(args) + "]";
+	}
+}
+if (kwargs != undefined) {
+	if (is_struct(kwargs)) {
+		kwargs_str = json_stringify(kwargs);
+	} else {
+		kwargs_str = "{" + string(kwargs) + "}";
+	}
+} 
+
+// Prepare buffer and write arguments to pass
+var _buf = _python_prepare_buffer(4096);
+buffer_write(_buf, buffer_string, module);
+buffer_write(_buf, buffer_string, obj);
+buffer_write(_buf, buffer_string, args_str);
+buffer_write(_buf, buffer_string, kwargs_str);
+
+// Run Python module
+var ret = _python_run_file(buffer_get_address(_buf));
 switch (ret) {
 	case -1: // Python exception
 		var exc = buffer_read(_buf, buffer_string);
@@ -27,17 +53,12 @@ switch (ret) {
 	case 0: // Couldn't run function
 		show_message("Module " + module + " couldn't be loaded!");
 		return;
-	case 1: // None
-		return noone;
-	case 2: // bool
-		return buffer_read(_buf, buffer_bool);
-	case 3: // int
-		return buffer_read(_buf, buffer_s32);
-	case 4: // float
-		return buffer_read(_buf, buffer_f64); // f64 = double (python float), f32 = float
-	case 100: // str
-		return buffer_read(_buf, buffer_string);
-	default: // anything else
-		return buffer_read(_buf, buffer_string);
+	case 1: // Success; parse JSON string back into object
+		var result = buffer_read(_buf, buffer_string);
+		if (result == "null") {
+			return pointer_null;
+		} else {
+			return json_parse(result);
+		}
 }
 

@@ -32,53 +32,42 @@ public:
     }
 };
 
-GMEXPORT double _python_run_file(char* cbuf, char* module, char* callable, char* args) {
+GMEXPORT double _python_run_file(char* cbuf) {
     // Set up buffer for writing result
     buffer b(cbuf);
 
+    // Read arguments from buffer
+    char* module = b.read_string();
+    char* callable = b.read_string();
+    char* args = b.read_string();
+    char* kwargs = b.read_string();
+
     // Initialize Python interpreter
     py::scoped_interpreter guard{};
-
-    // Build expression to be called
-    std::string sModule, sCallable, sArgs, call;
-    sModule = std::string(module);
-    sCallable = std::string(callable);
-    sArgs = std::string(args);
-    call = sCallable + "(" + sArgs + ")";
-
+    
     try {
-        // Load Python module
-        py::exec("from " + sModule + " import " + sCallable);
+        // Load JSON module for serializing and parsing args/result
+        py::module_ json = py::module_::import("json");
+        py::object json_dumps = json.attr("dumps");
+        py::object json_loads = json.attr("loads");
 
-        // Call line and return result as a string
-        py::object result = py::eval(call);
+        // Implement default conversion to 'str' for unsupported types
+        //
+        // TODO
+        //
+ 
+        // Import module and parse arguments for call
+        py::module_ pModule = py::module_::import(module);
+        py::object pFunc = pModule.attr(callable);
+        py::object pArgs = json_loads(args);
+        py::object pKwargs = json_loads(kwargs);
 
-        // Buffer contains the result of the call
-        // Return code defines how the buffer value must be treated
-        if (result.is_none()) {
-            return 1;
-        }
-        else if (py::isinstance<py::bool_>(result)) {
-            int value = py::int_(result).cast<int>();
-            b.write<int>(value);
-            return 2;
-        }
-        else if (py::isinstance<py::int_>(result)) {
-            int value = result.cast<int>();
-            b.write<int>(value);
-            return 3;
-        }
-        else if (py::isinstance<py::float_>(result)) {
-            double value = result.cast<double>();
-            b.write<double>(value);
-            return 4;
-        }
-        else {
-            std::string value = py::str(result).cast<std::string>();
-            const char* cstr = value.c_str();
-            b.write_string(cstr);
-            return 100;
-        }
+        // Call function and return result as JSON string
+        py::object result = pFunc(*pArgs, **pKwargs);
+        std::string sResult = json_dumps(result).cast<std::string>();
+        const char* cstr = sResult.c_str();
+        b.write_string(cstr);
+        return 1;
     }
     catch (py::error_already_set& e) {
         // Return exception and traceback as a string

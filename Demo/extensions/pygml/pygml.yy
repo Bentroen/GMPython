@@ -21,6 +21,7 @@
             1,
             1,
             1,
+            1,
           ],"resourceVersion":"1.0","name":"python_run_file","tags":[],"resourceType":"GMExtensionFunction",},
         {"externalName":"_python_prepare_buffer","kind":2,"help":"","hidden":false,"returnType":1,"argCount":0,"args":[
             2,
@@ -31,9 +32,6 @@
       ],"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMExtensionFile",},
     {"filename":"pygml.dll","origname":"","init":"","final":"","kind":1,"uncompress":false,"functions":[
         {"externalName":"_python_run_file","kind":1,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[
-            1,
-            1,
-            1,
             1,
           ],"resourceVersion":"1.0","name":"_python_run_file","tags":[],"resourceType":"GMExtensionFunction",},
       ],"constants":[],"ProxyFiles":[],"copyToTargets":-1,"order":[

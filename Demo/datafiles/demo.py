@@ -18,6 +18,9 @@ def get_string():
 
 def get_list():
 	return list(range(10))
+	
+def get_dict():
+	return dict(zip("abcdef", range(6)))
 
 def exception():
 	print(2/0)
@@ -27,3 +30,9 @@ def sum(a, b):
 
 def sqrt(x):
 	return math.sqrt(x)
+
+def reverse(s, upper=False):
+	if upper:
+		return s.upper()[::-1]
+	else:
+		return s[::-1]

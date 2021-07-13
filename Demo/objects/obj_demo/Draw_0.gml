@@ -8,7 +8,7 @@ draw_text(200, 240, "Press Tab to cycle fields");
 draw_text(200, 260, "Press Enter to run Python call");
 
 // Draw input boxes
-for (var i = 0; i < 3; i++) {
+for (var i = 0; i < 4; i++) {
 	if (sel == i) {
 		draw_set_color(c_aqua)
 	} else {
@@ -40,7 +40,7 @@ if (keyboard_lastkey != -1) {
 if (keyboard_check_pressed(vk_tab)) {
 	sel += 1;
 }
-if (sel > 2) sel = 0;
+if (sel > 3) sel = 0;
 
 // Open demo Python module
 if (keyboard_check_pressed(vk_f1)) {
@@ -50,7 +50,7 @@ if (keyboard_check_pressed(vk_f1)) {
 // Run Python file
 if (keyboard_check_pressed(vk_enter)) {
 	try {
-		result = python_run_file(values[0], values[1], values[2]);
+		result = python_run_file(values[0], values[1], values[2], values[3]);
 	} catch (e) {
 		show_message("Python exception raised while running module '" + values[0] + "':\n\n" + e);
 	}
@@ -59,6 +59,6 @@ if (keyboard_check_pressed(vk_enter)) {
 // Draw call result
 draw_set_color(c_white)
 if (!is_undefined(result)) {
-	draw_text(100, 530, "Call result:");
-	draw_text(200, 560, string(result));
+	draw_text(100, 580, "Call result:");
+	draw_text(200, 610, string(result));
 }

@@ -1,8 +1,8 @@
 window_set_caption("pygml demo");
 
-fields = ["Module", "Function", "Args"];
-values = ["demo", "sum", "2, 3"];
 chars = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+fields = ["Module", "Function", "Args", "Kwargs"];
+values = ["demo", "reverse", "\"Hello world!\"", "\"upper\": true"];
 sel = 0;
 
 result = undefined;

@@ -13,8 +13,8 @@ buffer_seek(_buf, buffer_seek_start, 0);
 return _buf;
 
 
-#define python_run_file
-/// @function python_run_file(module, function[, args[, kwargs]])
+#define python_call_function
+/// @function python_call_function(module, function[, args[, kwargs]])
 /// @description Runs a Python function from a module. A single positional
 ///			argument may be passed directly to the function. You may pass
 ///			positional arguments as an array, and multiple keyword arguments
@@ -54,7 +54,7 @@ buffer_write(_buf, buffer_string, args_str);
 buffer_write(_buf, buffer_string, kwargs_str);
 
 // Run Python module
-var ret = _python_run_file(buffer_get_address(_buf));
+var ret = _python_call_function(buffer_get_address(_buf));
 switch (ret) {
 	case -1: // Python exception
 		var exc = buffer_read(_buf, buffer_string);

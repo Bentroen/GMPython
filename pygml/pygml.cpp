@@ -32,7 +32,7 @@ public:
     }
 };
 
-GMEXPORT double _python_run_file(char* cbuf) {
+GMEXPORT double _python_call_function(char* cbuf) {
     // Set up buffer for writing result
     buffer b(cbuf);
 

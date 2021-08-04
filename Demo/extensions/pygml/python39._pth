@@ -1,0 +1,8 @@
+python39.zip
+.
+
+# Path where python scripts reside in your game's files
+python\
+
+# Uncomment to run site.main() automatically
+#import site

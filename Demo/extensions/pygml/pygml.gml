@@ -13,8 +13,16 @@ buffer_seek(_buf, buffer_seek_start, 0);
 return _buf;
 
 #define python_run_file
-/// python_run_file() : Call a Python function from a module.
-/// (module:string, object:string, args:string)~
+/// @function python_run_file(module, function[, args[, kwargs]])
+/// @description Runs a Python function from a module. A single positional
+///			argument may be passed directly to the function. You may pass
+///			positional arguments as an array, and multiple keyword arguments
+///			as a struct.
+/// @param {string} module		The Python module to run the function from
+/// @param {string} function	The function name to be called
+/// @param {struct} args		A single value, or an array containing the positional argument(s) to pass
+/// @param {array}  kwargs		A struct containing the keyword argument(s) to pass
+
 var module = argument0;
 var obj = argument1;
 var args = argument2;

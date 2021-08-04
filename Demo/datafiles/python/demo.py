@@ -36,3 +36,7 @@ def reverse(s, upper=False):
 		return s.upper()[::-1]
 	else:
 		return s[::-1]
+
+def getid():
+	test = 10
+	print(hex(id(test)))

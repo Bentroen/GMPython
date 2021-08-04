@@ -12,6 +12,7 @@ if (_buf == undefined) {
 buffer_seek(_buf, buffer_seek_start, 0);
 return _buf;
 
+
 #define python_run_file
 /// @function python_run_file(module, function[, args[, kwargs]])
 /// @description Runs a Python function from a module. A single positional
@@ -69,4 +70,3 @@ switch (ret) {
 			return json_parse(result);
 		}
 }
-

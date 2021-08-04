@@ -76,6 +76,4 @@ GMEXPORT double _python_call_function(char* cbuf) {
         b.write_string(exc);
         return -1;
     }
-
-    py::finalize_interpreter();
 }

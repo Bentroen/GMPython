@@ -97,7 +97,7 @@ show_debug_message(result); // [1.0, 2.0, 3.0, 4.0, 5.0]
 Keyword arguments may be passed as a struct:
 
 ```gml
-python_call_function("builtins", "sorted", [[4, 2, 3, 1, 5]], {reversed: true});
+var result = python_call_function("builtins", "sorted", [[4, 2, 3, 1, 5]], {reversed: true});
 show_debug_message(result); // [5.0, 4.0, 3.0, 2.0, 1.0]
 ```
 
@@ -105,7 +105,7 @@ Any exception that occurs in the Python side will throw a GameMaker error contai
 
 ```gml
 try {
-    var result = python_call_function("", "divmod", [10, 0]);
+    var result = python_call_function("builtins", "divmod", [10, 0]);
 }
 catch (e) {
     // Show exception on the screen
@@ -117,7 +117,7 @@ This way, scripts may be run safely without crashing your game, and you may log 
 
 All the examples above showcase basic features of the module by calling built-in functions. However, pygml's true power lies on its capability of importing third-party modules.
 
-You can add as many modules as you wish to your game by placing them in `datafiles/` or `datafiles/python/` in your GameMaker project. If you want to keep your scripts in a different folder, check Setup above.
+You can add as many modules as you wish to your game by placing them in `datafiles/` or `datafiles/python/` in your GameMaker project. If you want to keep your scripts in a different folder, check [Setup](#Setup) above.
 
 
 ## Building
@@ -130,7 +130,7 @@ If you need to use a version of Python that is not provided with the releases, b
 
 2. Install pybind11 for your version of Python:
    ```
-   pip install pybind11
+   $ pip install pybind11
    ```
 
 3. Open the Visual Studio project. The default include and library paths point to `C:/Program Files (x86)/Python/Python39-32` for 32-bit Python, and `C:/Program Files/Python/Python39` for 64-bit Python (default locations for the system-wide Python installation). If you installed Python to a different location, adjust the Include Directories and Library Directories as necessary. Alternatively, just copy `pybind11.h`, `python.h` and `python39.lib` into your project folder, and add them as included headers and libraries, respectively.
@@ -145,7 +145,7 @@ If you need to use a version of Python that is not provided with the releases, b
    > 
    > Keep in mind, however, that some modules are used during the Python initialization, and some are required by the `json` module. **Removing any of those will cause the extension to fail or even crash your game.** Make sure to use the `python39_minimal.zip` file included in the release as a base on what files to include, then add any other modules you need.
 
-7. If you want to have your Python files somewhere other than your game's root folder, open `python39._pth` and add the path to the folder to look for packages.
+7. If you want to have your Python files somewhere other than your game's root folder, open `python39._pth` and add the path to look for packages at.
 
 8. In GameMaker, replace each file in the extension as appropriate.
 
@@ -168,15 +168,17 @@ If you need to use a version of Python that is not provided with the releases, b
 
 ## To-do
 
-- Add extra functions to run a simple Python string, file or call a method
+- Add extra functions to run a simple Python string, file, or call object methods
 
 - Add default conversion for Python types with unsupported JSON serialization
 
-- Add support for other JSON handling libraries for compatibility with more types
+- Add support for other JSON parsing libraries for compatibility with more types
 
 - Add individual error checking for each Python operation (module import, function call etc.)
 
 - Allow more control over the interpreter lifetime with dedicated functions for initializing and finalizing it
+
+- Add more interaction between Python and GameMaker besides simply running code snippets
 
 
 ## Thanks

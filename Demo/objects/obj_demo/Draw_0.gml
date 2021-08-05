@@ -50,7 +50,7 @@ if (keyboard_check_pressed(vk_f1)) {
 // Run Python file
 if (keyboard_check_pressed(vk_enter)) {
 	try {
-		result = python_run_file(values[0], values[1], values[2], values[3]);
+		result = python_call_function(values[0], values[1], values[2], values[3]);
 	} catch (e) {
 		show_message("Python exception raised while running module '" + values[0] + "':\n\n" + e);
 	}

@@ -44,7 +44,7 @@ if (sel > 3) sel = 0;
 
 // Open demo Python module
 if (keyboard_check_pressed(vk_f1)) {
-	url_open(working_directory + "demo.py");
+	url_open(working_directory + "python/demo.py");
 }
 
 // Run Python file

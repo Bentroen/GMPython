@@ -29,22 +29,17 @@ var obj = argument1;
 var args = argument2;
 var kwargs = argument3;
 
+args = is_undefined(args) ? [] : args;
+kwargs = is_undefined(kwargs) ? {} : kwargs;
+
 // Serialize arguments to JSON string
-var args_str = "", kwargs_str = "";
-if (args != undefined) {
-	if (is_array(args)) {
-		args_str = json_stringify(args);
-	} else {
-		args_str = "[" + string(args) + "]";
-	}
+var args_str = json_stringify(args);
+if (is_struct(kwargs)) {
+	var kwargs_str = json_stringify(kwargs);
+} else {
+	show_message("pygml error: Keyword arguments must be specified in a struct")
+	return;
 }
-if (kwargs != undefined) {
-	if (is_struct(kwargs)) {
-		kwargs_str = json_stringify(kwargs);
-	} else {
-		kwargs_str = "{" + string(kwargs) + "}";
-	}
-} 
 
 // Prepare buffer and write arguments to pass
 var _buf = _python_prepare_buffer(4096);

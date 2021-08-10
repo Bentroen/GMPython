@@ -62,8 +62,17 @@ GMEXPORT double _python_call_function(char* cbuf) {
         py::object pArgs = json_loads(args);
         py::object pKwargs = json_loads(kwargs);
 
+        // Wrap single argument into a list
+        py::list pArgsList;
+        if (!py::isinstance<py::list>(pArgs)) {
+            pArgsList.append(pArgs);
+        }
+        else {
+            pArgsList = pArgs;
+        }
+
         // Call function and return result as JSON string
-        py::object result = pFunc(*pArgs, **pKwargs);
+        py::object result = pFunc(*pArgsList, **pKwargs);
         std::string sResult = json_dumps(result).cast<std::string>();
         const char* cstr = sResult.c_str();
         b.write_string(cstr);

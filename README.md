@@ -39,10 +39,18 @@ Download the extension [here](). Drag and drop the file into your GameMaker proj
 > Due to its extensive use of structs, **pygml requires GameMaker 2.3+** (2.3.2 or later is recommended due to a [bug](https://forum.yoyogames.com/index.php?threads/issues-saving-undefined-struct-variables-to-json-solved.85143/) in JSON conversion in prior versions).
 >
 > Currently, downloads are only provided for Windows, although there are no Windows-specific dependencies preventing it from working on Mac/Linux.
+>
+> The Python version provided with the builds will always be the latest stable release. If you need to use a different Python version, check [Building](#Building).
 
 By default, the extension is configured so Python modules can be loaded either from the root folder of your game, or from a subdirectory named `python` (so your scripts must be placed either in `datafiles/` or `datafiles/python/` in the GameMaker project).
 
 If your project uses a different structure and you need to change where modules are loaded from, open `python39._pth` and change the `python/` line to the appropriate path (or add a new line).
+
+The Python standard library is included with the extension as two files: `python39_minimal.zip` and `python39.zip`. The first file contains the absolutely necessary packages for pygml to run correctly, while the second contains everything in the standard library. These are **not complementary**, i.e. you can either pick one of them, or create your own custom combination. This leaves you with three options:
+
+1. Delete `python39_minimal.zip` to use the full standard library;
+2. Rename `python39_minimal.zip` to `python39.zip` to use the minimal library. Python will be lacking basic functionality, but you'll get a much smaller executable;
+3. Add only the packages you need from the standard library to `python39_minimal.zip`, and rename it as above.
 
 As pygml uses an embedded Python interpreter, installing third-party packages with `pip` is not supported. To include those, install them as normal in your system Python installation, then head to `<python_path>/Lib/site-packages/` and copy the relevant files to `datafiles/python/site-packages/` (or whatever folder you defined above).
 
@@ -60,21 +68,22 @@ python_call_function(module_name, function_name[, args[, kwargs]])
 To call a simple Python function from a module, getting its return value, do:
 
 ```gml
-var result = python_call_function("random", "randint");
+var result = python_call_function("random", "random");
+// result will contain a random value from 0 to 1
 ```
 
 A single `real` or `string` may be passed to the function as a positional argument:
 
 ```gml
-var result = python_call_function("math", "sqrt", 36);
-show_debug_message(result) // 6.0
+var result = python_call_function("math", "factorial", 5);
+show_debug_message(result) // 120.0
 ```
 
 > **Tip:** In Python syntax, the above is essentially the same thing as
 >
 > ```python
 > import math
-> result = math.random(36)
+> result = math.factorial(5)
 > print(result)
 > ```
 
@@ -85,14 +94,16 @@ var result = python_call_function("builtins", "min", [18, 42, 35, 11, 24]);
 show_debug_message(result); // 11.0
 ```
 
-When Python returns a list/tuple or a dict, they will be conveniently converted to GML arrays and structs:
+> Keep in mind that the outermost `list` received by Python will be unpacked into `*args` when being passed to the function, so wrap that into another array if you want to pass a single `list` rather than separate arguments.
+
+When Python returns a list/tuple or a dict, they will be converted to GML arrays or structs:
 
 ```gml
 var result = python_call_function("builtins", "sorted", [[4, 3, 2, 5, 1]]);
 show_debug_message(result); // [1.0, 2.0, 3.0, 4.0, 5.0]
 ```
 
-> Note that we use two square brackets `[[ ]]` above. The outermost pair denotes the array of arguments, while the innermost pair wraps the numbers into another array, which will be passed as a single argument to Python.
+> Note that this time we use two square brackets `[[ ]]`, as mentioned above. The outermost pair denotes the array of arguments, while the innermost pair wraps the numbers into another array, which will be passed as a single argument to Python.
 
 Keyword arguments may be passed as a struct:
 
@@ -115,7 +126,7 @@ catch (e) {
 
 This way, scripts may be run safely without crashing your game, and you may log the error message however you wish. Make sure, however, to handle errors appropriately if you decide to ignore them. The function will return `undefined` if an exception is raised, and your game may not work properly if it relies on the returned value.
 
-All the examples above showcase basic features of the module by calling built-in functions. However, pygml's true power lies on its capability of importing third-party modules.
+All the examples above showcase basic features of the extension by calling functions from the standard library. However, its true power lies on its capability of importing third-party modules.
 
 You can add as many modules as you wish to your game by placing them in `datafiles/` or `datafiles/python/` in your GameMaker project. If you want to keep your scripts in a different folder, check [Setup](#Setup) above.
 
@@ -159,7 +170,7 @@ If you need to use a version of Python that is not provided with the releases, b
 
 - As pygml relies on GameMaker's `json_stringify` and `json_parse` functions, which are somewhat limited, it is wise to take those limitations into account when passing and returning values. Read this GameMaker [manual page](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/File_Handling/Encoding_And_Hashing/json_stringify.htm) for details.
 
-- Not all Python types support JSON serialization. Currently, returning a non-supported type will raise a `JSONDecodeError`. If you need to return a complex object, write a wrapper function that converts it into a simpler `dict` or `list` and then call that function from GML. A default conversion for unsupported types will be worked on in the future. Additionally, support for third-party JSON libraries such as [orjson](https://github.com/ijl/orjson) will be added for compatiblity with more built-in data types. Read the `json` module [documentation](https://docs.python.org/3/library/json.html) for more details.
+- Not all Python types support JSON serialization. Currently, calling a function that returns a non-supported type will raise a `JSONDecodeError`. If you need to return a complex object, write a wrapper function that converts it into a simpler `dict` or `list` and then call that function from GML. A default conversion for unsupported types will be worked on in the future. Additionally, support for third-party JSON libraries such as [orjson](https://github.com/ijl/orjson) will be added for compatiblity with more built-in data types. Read the `json` module [documentation](https://docs.python.org/3/library/json.html) for more details.
 
 - As GML doesn't know the concept of booleans, they are not correctly transmitted to Python as `True` or `False`, but as `1.0` and `0.0`. For most purposes, this isn't a big problem, as they'll be correctly interpreted as true and false when used in this context.
 

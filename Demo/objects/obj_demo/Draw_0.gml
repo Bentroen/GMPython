@@ -56,7 +56,7 @@ if (keyboard_check_pressed(vk_enter)) {
 			args = json_parse(values[2]);
 		} catch (e) {
 			result = undefined;
-			show_message(e.message + " while parsing args.\n\nTip: Write args as a valid JSON text.");
+			show_message(e.message + " while parsing args.\n\nTip: Write args as a valid JSON string.");
 			return;
 		}
 	}
@@ -65,7 +65,7 @@ if (keyboard_check_pressed(vk_enter)) {
 			kwargs = json_parse(values[3]);
 		} catch (e) {
 			result = undefined;
-			show_message(e.message + " while parsing kwargs.\n\nTip: Write kwargs as a valid JSON text.");
+			show_message(e.message + " while parsing kwargs.\n\nTip: Write kwargs as a valid JSON string.");
 			return;
 		}
 	}
@@ -74,7 +74,7 @@ if (keyboard_check_pressed(vk_enter)) {
 	try {
 		result = python_call_function(values[0], values[1], args, kwargs);
 	} catch (e) {
-		show_message("Python exception raised while running module '" + values[0] + "':\n\n" + e);
+		show_message("Python exception raised while calling function '" + values[1] + "':\n\n" + e);
 	}
 }
 

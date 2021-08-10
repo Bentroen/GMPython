@@ -47,8 +47,8 @@ if (keyboard_check_pressed(vk_f1)) {
 	url_open(working_directory + "python/demo.py");
 }
 
-// Run Python file
 if (keyboard_check_pressed(vk_enter)) {
+	// Parse input strings into struct/array
 	var args = undefined;
 	var kwargs = undefined;
 	if (values[2] != "") {
@@ -56,7 +56,7 @@ if (keyboard_check_pressed(vk_enter)) {
 			args = json_parse(values[2]);
 		} catch (e) {
 			result = undefined;
-			show_message(e.message + " while processing args.\n\nTip: Write args as a valid JSON text.");
+			show_message(e.message + " while parsing args.\n\nTip: Write args as a valid JSON text.");
 			return;
 		}
 	}
@@ -65,11 +65,12 @@ if (keyboard_check_pressed(vk_enter)) {
 			kwargs = json_parse(values[3]);
 		} catch (e) {
 			result = undefined;
-			show_message(e.message + " while processing kwargs.\n\nTip: Write kwargs as a valid JSON text.");
+			show_message(e.message + " while parsing kwargs.\n\nTip: Write kwargs as a valid JSON text.");
 			return;
 		}
 	}
 	
+	// Run Python file
 	try {
 		result = python_call_function(values[0], values[1], args, kwargs);
 	} catch (e) {

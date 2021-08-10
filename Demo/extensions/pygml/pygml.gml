@@ -55,7 +55,7 @@ switch (ret) {
 		var exc = buffer_read(_buf, buffer_string);
 		throw exc;
 	case 0: // Couldn't run function
-		show_message("Module " + module + " couldn't be loaded!");
+		show_message("pygml error: The extension couldn't be loaded");
 		return;
 	case 1: // Success; parse JSON string back into object
 		var result = buffer_read(_buf, buffer_string);

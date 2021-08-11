@@ -1,6 +1,13 @@
 # pygml
 A GameMaker Studio 2 extension for calling Python scripts from GML.
 
+1. [Overview](#Overview)
+2. [Setup](#Setup)
+3. [Usage](#Usage)
+4. [Building](#Building)
+5. [Limitations](#Limitations)
+6. [To-do](#To-do)
+7. [Thanks](#Thanks)
 
 ## Overview
 
@@ -34,7 +41,7 @@ Nested arrays/structs in the arguments are supported and will be correctly trans
 
 ## Setup
 
-Download the extension [here](). Drag and drop the file into your GameMaker project.
+Download the extension [here](https://github.com/Bentroen/pygml/releases/latest). Drag and drop the file into your GameMaker project.
 
 > Due to its extensive use of structs, **pygml requires GameMaker 2.3+** (2.3.2 or later is recommended due to a [bug](https://forum.yoyogames.com/index.php?threads/issues-saving-undefined-struct-variables-to-json-solved.85143/) in JSON conversion in prior versions).
 >
@@ -148,7 +155,7 @@ If you need to use a version of Python that is not provided with the releases, b
 
 4. Build the DLL.
 
-5. Download the [Windows embeddable package](https://www.python.org/ftp/python/3.9.6/python-3.9.6-embed-win32.zip) for your version of Python. This contains a minimal Python installation that can be shipped with your game so that users do not need Python installed on their machine. You can read more about it [here](https://docs.python.org/3/using/windows.html#the-embeddable-package).
+5. Download the [Windows embeddable package](https://www.python.org/downloads/windows/) for your version of Python. This contains a minimal Python installation that can be shipped with your game so that users do not need Python installed on their machine. You can read more about it [here](https://docs.python.org/3/using/windows.html#the-embeddable-package).
 
 6. Extract `python39.dll`, `python39.zip` and `python39._pth` from the embeddable package.
 
@@ -190,6 +197,8 @@ If you need to use a version of Python that is not provided with the releases, b
 - Allow more control over the interpreter lifetime with dedicated functions for initializing and finalizing it
 
 - Add more interaction between Python and GameMaker besides simply running code snippets
+
+- Add support for Mac/Linux and (possibly) older GameMaker versions
 
 
 ## Thanks

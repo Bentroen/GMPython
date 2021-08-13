@@ -81,7 +81,6 @@ GMEXPORT double _python_call_function(char* cbuf) {
     catch (py::error_already_set& e) {
         // Return exception and traceback as a string
         const char* exc = e.what();
-        std::cout << exc;
         b.write_string(exc);
         return -1;
     }

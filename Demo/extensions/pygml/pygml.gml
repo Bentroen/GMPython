@@ -51,6 +51,7 @@ var ret = _python_call_function(buffer_get_address(_buf));
 switch (ret) {
 	case -1: // Python exception
 		var exc = buffer_read(_buf, buffer_string);
+		show_debug_message("Python exception raised: " + exc + "\n");
 		throw exc;
 	case 0: // Couldn't run function
 		show_message("pygml error: The extension couldn't be loaded");

@@ -83,7 +83,7 @@ A single `real` or `string` may be passed to the function as a positional argume
 
 ```gml
 var result = python_call_function("math", "factorial", 5);
-show_debug_message(result) // 120.0
+show_debug_message(result) // 120
 ```
 
 > **Tip:** In Python syntax, the above is essentially the same thing as
@@ -98,7 +98,7 @@ Multiple positional arguments may be passed as a GameMaker array.
 
 ```gml
 var result = python_call_function("builtins", "min", [18, 42, 35, 11, 24]);
-show_debug_message(result); // 11.0
+show_debug_message(result); // 11
 ```
 
 > Keep in mind that the outermost `list` received by Python will be unpacked into `*args` when being passed to the function, so wrap that into another array if you want to pass a single `list` rather than separate arguments.
@@ -107,7 +107,7 @@ When Python returns a list/tuple or a dict, they will be converted to GML arrays
 
 ```gml
 var result = python_call_function("builtins", "sorted", [[4, 3, 2, 5, 1]]);
-show_debug_message(result); // [1.0, 2.0, 3.0, 4.0, 5.0]
+show_debug_message(result); // [ 1,2,3,4,5 ]
 ```
 
 > Note that this time we use two square brackets `[[ ]]`, as mentioned above. The outermost pair denotes the array of arguments, while the innermost pair wraps the numbers into another array, which will be passed as a single argument to Python.
@@ -115,8 +115,8 @@ show_debug_message(result); // [1.0, 2.0, 3.0, 4.0, 5.0]
 Keyword arguments may be passed as a struct:
 
 ```gml
-var result = python_call_function("builtins", "sorted", [[4, 2, 3, 1, 5]], {reversed: true});
-show_debug_message(result); // [5.0, 4.0, 3.0, 2.0, 1.0]
+var result = python_call_function("builtins", "sorted", [[4, 2, 3, 1, 5]], {reverse: true});
+show_debug_message(result); // [ 5,4,3,2,1 ]
 ```
 
 Any exception that occurs in the Python side will throw a GameMaker error containing the exception message and traceback, which may be caught by wrapping the call in a `try`/`catch` block:

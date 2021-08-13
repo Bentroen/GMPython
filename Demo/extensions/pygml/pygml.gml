@@ -57,7 +57,7 @@ switch (ret) {
 		return;
 	case 1: // Success; parse JSON string back into object
 		var result = buffer_read(_buf, buffer_string);
-		if (result == "null") {
+		if (result == "null") { // json_parse() doesn't correctly parse a single 'null' value
 			return pointer_null;
 		} else {
 			return json_parse(result);

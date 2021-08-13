@@ -17,7 +17,7 @@
   "installdir": "",
   "files": [
     {"filename":"pygml.gml","origname":"","init":"","final":"","kind":2,"uncompress":false,"functions":[
-        {"externalName":"python_call_function","kind":2,"help":"python_call_function(module, function, args, kwargs)","hidden":false,"returnType":1,"argCount":-1,"args":[
+        {"externalName":"python_call_function","kind":2,"help":"python_call_function(module, function, [args], [kwargs])","hidden":false,"returnType":1,"argCount":-1,"args":[
             1,
             1,
             1,

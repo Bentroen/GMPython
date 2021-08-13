@@ -24,13 +24,11 @@ return _buf;
 /// @param {struct} args		A single value, or an array containing the positional argument(s) to pass
 /// @param {array}  kwargs		A struct containing the keyword argument(s) to pass
 
-var module = argument0;
-var obj = argument1;
-var args = argument2;
-var kwargs = argument3;
-
-args = is_undefined(args) ? [] : args;
-kwargs = is_undefined(kwargs) ? {} : kwargs;
+var module = argument[0];
+var obj = argument[1];
+var args = argument_count > 2 ? argument[2] : [];
+var kwargs = argument_count > 3 ? argument[3] : undefined;
+kwargs = is_undefined(kwargs) ? {} : kwargs
 
 // Serialize arguments to JSON string
 var args_str = json_stringify(args);

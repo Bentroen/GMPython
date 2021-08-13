@@ -115,9 +115,11 @@ show_debug_message(result); // [ 1,2,3,4,5 ]
 Keyword arguments may be passed as a struct:
 
 ```gml
-var result = python_call_function("builtins", "sorted", [[4, 2, 3, 1, 5]], {reverse: true});
+var result = python_call_function("builtins", "sorted", [[4, 2, 3, 1, 5]], {reverse: bool(true)});
 show_debug_message(result); // [ 5,4,3,2,1 ]
 ```
+
+> It's recommended to call `bool()` on any boolean that you want to pass as an argument. Due to the way GameMaker handles booleans, Python will receive a `float` instead of a `bool` if you don't do this, which is not desirable in many cases. Read more about that in [Limitations](#Limitations).
 
 Any exception that occurs in the Python side will throw a GameMaker error containing the exception message and traceback, which may be caught by wrapping the call in a `try`/`catch` block:
 
@@ -173,15 +175,17 @@ If you need to use a version of Python that is not provided with the releases, b
 #### Memory cleanup
 - There's a number of problems involved with reinitializing a Python interpreter. Due to the way the garbage collector works, not all memory may be freed once the interpreter is finalized. Since pygml starts a new interpreter every time a function is called, leftover memory will pile up as Python functions are called. This problem may be resolved in a future version by keeping one instance of the interpreter alive for the whole session, and reusing it on each function call. You can read more about this on the [pybind11](https://pybind11.readthedocs.io/en/stable/advanced/embedding.html#interpreter-lifetime) and [CPython](https://docs.python.org/3/c-api/init.html#c.Py_FinalizeEx) documentations.
 
-#### Type conversion
+#### JSON conversion
 
-- As pygml relies on GameMaker's `json_stringify` and `json_parse` functions, which are somewhat limited, it is wise to take those limitations into account when passing and returning values. Read this GameMaker [manual page](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/File_Handling/Encoding_And_Hashing/json_stringify.htm) for details.
+- As pygml relies on GameMaker's `json_stringify()` and `json_parse()` functions, which are somewhat limited, it is wise to take those limitations into account when passing and returning values. Read this GameMaker [manual page](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/File_Handling/Encoding_And_Hashing/json_stringify.htm) for details.
 
 - Not all Python types support JSON serialization. Currently, calling a function that returns a non-supported type will raise a `JSONDecodeError`. If you need to return a complex object, write a wrapper function that converts it into a simpler `dict` or `list` and then call that function from GML. A default conversion for unsupported types will be worked on in the future. Additionally, support for third-party JSON libraries such as [orjson](https://github.com/ijl/orjson) will be added for compatiblity with more built-in data types. Read the `json` module [documentation](https://docs.python.org/3/library/json.html) for more details.
 
-- As GML doesn't know the concept of booleans, they are not correctly transmitted to Python as `True` or `False`, but as `1.0` and `0.0`. For most purposes, this isn't a big problem, as they'll be correctly interpreted as true and false when used in this context.
+#### GameMaker data types
 
-- Similarly, as both integers and floating-point numbers are treated as `real`s by GameMaker, an integer passed to a function will always be received as a `float` on Python's end. This can be particularly problematic if you're passing a value that must be used as an `int`, e.g. as a list index. In that case, you may need to write an intermediary Python function to convert it back to the appropriate type.
+- As both integers and floating-point numbers are treated as `real`s by GameMaker, an integer passed to a function will always be received as a `float` on Python's end. This can be particularly problematic if you're passing a value that must be used as an `int`, e.g. as a list index. In that case, you may need to write an intermediary Python function to convert it back to the appropriate type.
+
+- Similarly, as boolean values are internally stored as 0 and 1, if `true` and `false` are passed normally as arguments to a function, they will, for the reason above, become `float`s in Python (0.0 and 1.0). This can be a huge burden, since those values can't be interpreted as booleans in many cases. The only way to correctly receive the values as `True` and `False` is to call `bool()` on every boolean value you pass as an argument, which will force GameMaker to use its **true** boolean type. Read more about this [here](https://forum.yoyogames.com/index.php?threads/function-is_bool-not-working-properly-on-object-variables.65960/) and [here](https://bugs.yoyogames.com/view.php?id=26211).
 
 
 ## To-do

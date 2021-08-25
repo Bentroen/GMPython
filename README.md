@@ -1,4 +1,4 @@
-# pygml
+# GMPython
 A GameMaker Studio 2 extension for calling Python scripts from GML.
 
 1. [Overview](#Overview)
@@ -11,7 +11,7 @@ A GameMaker Studio 2 extension for calling Python scripts from GML.
 
 ## Overview
 
-pygml aims to provide access to a Python interpreter as a simple GameMaker function. It allows:
+GMPython aims to provide access to a Python interpreter as a simple GameMaker function. It allows:
 
 - Importing modules and calling top-level functions from them
 - Passing multiple positional and keyword arguments
@@ -45,7 +45,7 @@ Nested arrays/structs in the arguments are supported and will be correctly trans
 
 Download the extension [here](https://github.com/Bentroen/pygml/releases/latest). Drag and drop the file into your GameMaker project.
 
-> Due to its extensive use of structs, **pygml requires GameMaker 2.3+** (2.3.2 or later is recommended due to a [bug](https://forum.yoyogames.com/index.php?threads/issues-saving-undefined-struct-variables-to-json-solved.85143/) in JSON conversion in prior versions).
+> Due to its extensive use of structs, **GMPython requires GameMaker 2.3+** (2.3.2 or later is recommended due to a [bug](https://forum.yoyogames.com/index.php?threads/issues-saving-undefined-struct-variables-to-json-solved.85143/) in JSON conversion in prior versions).
 >
 > Currently, downloads are only provided for Windows, although there are no Windows-specific dependencies preventing it from working on Mac/Linux.
 >
@@ -61,7 +61,7 @@ The Python standard library is included with the extension as two files: `python
 2. Rename `python39_minimal.zip` to `python39.zip` to use the minimal library. Python will be lacking basic functionality, but you'll get a much smaller executable;
 3. Add only the packages you need from the standard library to `python39_minimal.zip`, and rename it as above.
 
-As pygml uses an embedded Python interpreter, installing third-party packages with `pip` is not supported. To include those, install them as normal in your system Python installation, then head to `<python_path>/Lib/site-packages/` and copy the relevant files to `datafiles/python/site-packages/` (or whatever folder you defined above).
+As GMPython uses an embedded Python interpreter, installing third-party packages with `pip` is not supported. To include those, install them as normal in your system Python installation, then head to `<python_path>/Lib/site-packages/` and copy the relevant files to `datafiles/python/site-packages/` (or whatever folder you defined above).
 
 That's all! You're now ready to run Python scripts from GameMaker! :D
 
@@ -175,11 +175,11 @@ If you need to use a version of Python that is not provided with the releases, b
 ## Limitations
 
 #### Memory cleanup
-- There's a number of problems involved with reinitializing a Python interpreter. Due to the way the garbage collector works, not all memory may be freed once the interpreter is finalized. Since pygml starts a new interpreter every time a function is called, leftover memory will pile up as Python functions are called. This problem may be resolved in a future version by keeping one instance of the interpreter alive for the whole session, and reusing it on each function call. You can read more about this on the [pybind11](https://pybind11.readthedocs.io/en/stable/advanced/embedding.html#interpreter-lifetime) and [CPython](https://docs.python.org/3/c-api/init.html#c.Py_FinalizeEx) documentations.
+- There's a number of problems involved with reinitializing a Python interpreter. Due to the way the garbage collector works, not all memory may be freed once the interpreter is finalized. Since GMPython starts a new interpreter every time a function is called, leftover memory will pile up as Python functions are called. This problem may be resolved in a future version by keeping one instance of the interpreter alive for the whole session, and reusing it on each function call. You can read more about this on the [pybind11](https://pybind11.readthedocs.io/en/stable/advanced/embedding.html#interpreter-lifetime) and [CPython](https://docs.python.org/3/c-api/init.html#c.Py_FinalizeEx) documentations.
 
 #### JSON conversion
 
-- As pygml relies on GameMaker's `json_stringify()` and `json_parse()` functions, which are somewhat limited, it is wise to take those limitations into account when passing and returning values. Read this GameMaker [manual page](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/File_Handling/Encoding_And_Hashing/json_stringify.htm) for details.
+- As GMPython relies on GameMaker's `json_stringify()` and `json_parse()` functions, which are somewhat limited, it is wise to take those limitations into account when passing and returning values. Read this GameMaker [manual page](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/File_Handling/Encoding_And_Hashing/json_stringify.htm) for details.
 
 - Not all Python types support JSON serialization. Currently, calling a function that returns a non-supported type will raise a `JSONDecodeError`. If you need to return a complex object, write a wrapper function that converts it into a simpler `dict` or `list` and then call that function from GML. A default conversion for unsupported types will be worked on in the future. Additionally, support for third-party JSON libraries such as [orjson](https://github.com/ijl/orjson) will be added for compatiblity with more built-in data types. Read the `json` module [documentation](https://docs.python.org/3/library/json.html) for more details.
 
@@ -215,4 +215,4 @@ If you need to use a version of Python that is not provided with the releases, b
 
 ---
 
-License - [MIT](https://github.com/Bentroen/pygml/blob/master/LICENSE)
+License - [MIT](https://github.com/Bentroen/GMPython/blob/master/LICENSE)

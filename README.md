@@ -36,7 +36,7 @@ Python        | GML
 `None`        | `pointer_null`
 _(exception)_ | `undefined`
 
-\*In order for booleans to be transmitted properly to Python, you must explicitly convert them with the `bool()` function in GML. See [Limitations](#GameMaker_data_types) for details.
+\*In order for booleans to be transmitted properly to Python, you must explicitly convert them with the `bool()` function in GML. See [Limitations](#GameMaker-data-types) for details.
 
 Nested arrays/structs in the arguments are supported and will be correctly transmitted to Python as nested lists/dicts. In the same fashion, returning those structures from the called function will also convert it to arrays and structs on the way back to GML.
 
@@ -121,7 +121,7 @@ var result = python_call_function("builtins", "sorted", [[4, 2, 3, 1, 5]], {reve
 show_debug_message(result); // [ 5,4,3,2,1 ]
 ```
 
-> It's recommended to call `bool()` on any boolean that you want to pass as an argument. Due to the way GameMaker handles booleans, Python will receive a `float` instead of a `bool` if you don't do this, which is not desirable in many cases. Read more about that in [Limitations](#GameMaker_data_types).
+> It's recommended to call `bool()` on any boolean that you want to pass as an argument. Due to the way GameMaker handles booleans, Python will receive a `float` instead of a `bool` if you don't do this, which is not desirable in many cases. Read more about that in [Limitations](#GameMaker-data-types).
 
 Any exception that occurs in the Python side will throw a GameMaker error containing the exception message and traceback, which may be caught by wrapping the call in a `try`/`catch` block:
 

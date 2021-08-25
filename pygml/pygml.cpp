@@ -2,7 +2,6 @@
 namespace py = pybind11;
 
 #include <string>
-#include <iostream>
 
 #define GMEXPORT extern "C" __declspec (dllexport)
 

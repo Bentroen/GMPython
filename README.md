@@ -19,11 +19,11 @@ GMPython aims to provide access to a Python interpreter as a simple GameMaker fu
 - Getting Python exceptions across so that they can be handled in GML
 - No Python installation required for users of your game
 
-To achieve this sort of integration in a way that keeps things simple under the hood, pygml uses the awesome [pybind11](https://github.com/pybind/pybind11) library, which provides seamless operability between Python and C++.
+To achieve this sort of integration in a way that keeps things simple under the hood, GMPython uses the awesome [pybind11](https://github.com/pybind/pybind11) library, which provides seamless operability between Python and C++.
 
 In order to support both passing and returning complex data structures from GML to Python and vice-versa, values are converted to JSON on the way through. While this does come with its own set of limitations, this simple approach allows support for nested data structures out of the box, while keeping conversion code to a minimum, thus reducing errors that could arise from other serialization techniques.
 
-Here are all the types supported by pygml and their resulting Python ⟷ GML conversions:
+Here are all the types supported by GMPython and their corresponding Python ⟷ GML conversions:
 
 Python        | GML
 --------------|-----------------------
@@ -43,7 +43,7 @@ Nested arrays/structs in the arguments are supported and will be correctly trans
 
 ## Setup
 
-Download the extension [here](https://github.com/Bentroen/pygml/releases/latest). Drag and drop the file into your GameMaker project.
+Download the extension [here](https://github.com/Bentroen/GMPython/releases/latest). Drag and drop the file into your GameMaker project.
 
 > Due to its extensive use of structs, **GMPython requires GameMaker 2.3+** (2.3.2 or later is recommended due to a [bug](https://forum.yoyogames.com/index.php?threads/issues-saving-undefined-struct-variables-to-json-solved.85143/) in JSON conversion in prior versions).
 >
@@ -55,7 +55,7 @@ By default, the extension is configured so Python modules can be loaded either f
 
 If your project uses a different structure and you need to change where modules are loaded from, open `python39._pth` and change the `python/` line to the appropriate path (or add a new line).
 
-The Python standard library is included with the extension as two files: `python39_minimal.zip` and `python39.zip`. The first file contains the absolutely necessary packages for pygml to run correctly, while the second contains everything in the standard library. These are **not complementary**, i.e. you can either pick one of them, or create your own custom combination. This leaves you with three options:
+The Python standard library is included with the extension as two files: `python39_minimal.zip` and `python39.zip`. The first file contains the absolutely necessary packages for GMPython to run correctly, while the second contains everything in the standard library. These are **not complementary**, i.e. you can either pick one of them, or create your own custom combination. This leaves you with three options:
 
 1. Delete `python39_minimal.zip` to use the full standard library;
 2. Rename `python39_minimal.zip` to `python39.zip` to use the minimal library. Python will be lacking basic functionality, but you'll get a much smaller executable;

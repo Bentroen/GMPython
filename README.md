@@ -36,8 +36,6 @@ Python        | GML
 `None`        | `pointer_null`
 _(exception)_ | `undefined`
 
-\*In order for booleans to be transmitted properly to Python, you must explicitly convert them with the `bool()` function in GML. See [Limitations](#GameMaker-data-types) for details.
-
 Nested arrays/structs in the arguments are supported and will be correctly transmitted to Python as nested lists/dicts. In the same fashion, returning those structures from the called function will also convert it to arrays and structs on the way back to GML.
 
 
@@ -61,7 +59,7 @@ The Python standard library is included with the extension as two files: `python
 2. Rename `python39_minimal.zip` to `python39.zip` to use the minimal library. Python will be lacking basic functionality, but you'll get a much smaller executable;
 3. Add only the packages you need from the standard library to `python39_minimal.zip`, and rename it as above.
 
-As GMPython uses an embedded Python interpreter, installing third-party packages with `pip` is not supported. To include those, install them as normal in your system Python installation, then head to `<python_path>/Lib/site-packages/` and copy the relevant files to `datafiles/python/site-packages/` (or whatever folder you defined above).
+As GMPython uses an embedded Python interpreter, installing third-party packages with `pip` is not supported. To include those, install them as normal in your system Python installation, then head to `<python_path>/Lib/site-packages/` and copy the relevant files to `datafiles/python/site-packages/` (or whatever folder you defined above). You may also use external packaging tools, such as [`poetry`](https://python-poetry.org/), to handle your game's dependencies.
 
 That's all! You're now ready to run Python scripts from GameMaker! :D
 
@@ -121,7 +119,7 @@ var result = python_call_function("builtins", "sorted", [[4, 2, 3, 1, 5]], {reve
 show_debug_message(result); // [ 5,4,3,2,1 ]
 ```
 
-> It's recommended to call `bool()` on any boolean that you want to pass as an argument. Due to the way GameMaker handles booleans, Python will receive a `float` instead of a `bool` if you don't do this, which is not desirable in many cases. Read more about that in [Limitations](#GameMaker-data-types).
+> In GameMaker versions prior to 2.3.7, it's recommended to call `bool()` on any boolean that you want to pass as an argument. Due to the way those versions handle booleans, Python will receive a `float` instead of a `bool` if you don't do this, which is not desirable in many cases. Starting in GameMaker 2.3.7, this is no longer necessary. Read more about that in [Limitations](#GameMaker-data-types).
 
 Any exception that occurs in the Python side will throw a GameMaker error containing the exception message and traceback, which may be caught by wrapping the call in a `try`/`catch` block:
 
@@ -140,6 +138,18 @@ This way, scripts may be run safely without crashing your game, and you may log 
 All the examples above showcase basic features of the extension by calling functions from the standard library. However, its true power lies on its capability of importing third-party modules.
 
 You can add as many modules as you wish to your game by placing them in `datafiles/` or `datafiles/python/` in your GameMaker project. If you want to keep your scripts in a different folder, check [Setup](#Setup) above.
+
+#### Buffer usage
+
+In order to pass arguments and receive return results back, GMPython uses a single shared buffer. By default, this buffer is allocated 4,096 bytes (4 KiB), which should be enough for common usage. However, in case you're passing around or receiving really large structures, you should increase the internal buffer's size prior to calling the function:
+
+```gml
+python_set_buffer_size(65536); // will resize the buffer to 64 KiB
+```
+
+Keep in mind that the size in bytes taken by each variable is not actually its raw size, but the length of its data encoded to JSON — so the number 1000000 takes 7 bytes, 1000000000 takes 10 bytes and so on.
+
+Currently, writing data beyond the buffer size results in undefined behavior — as such, it is wise to be generous when allocating the buffer size, as the resulting data may end up being larger than expected. A more sophisticated way of detecting buffer overflows may be added in the future.
 
 
 ## Building
@@ -174,9 +184,6 @@ If you need to use a version of Python that is not provided with the releases, b
 
 ## Limitations
 
-#### Memory cleanup
-- There's a number of problems involved with reinitializing a Python interpreter. Due to the way the garbage collector works, not all memory may be freed once the interpreter is finalized. Since GMPython starts a new interpreter every time a function is called, leftover memory will pile up as Python functions are called. This problem may be resolved in a future version by keeping one instance of the interpreter alive for the whole session, and reusing it on each function call. You can read more about this on the [pybind11](https://pybind11.readthedocs.io/en/stable/advanced/embedding.html#interpreter-lifetime) and [CPython](https://docs.python.org/3/c-api/init.html#c.Py_FinalizeEx) documentations.
-
 #### JSON conversion
 
 - As GMPython relies on GameMaker's `json_stringify()` and `json_parse()` functions, which are somewhat limited, it is wise to take those limitations into account when passing and returning values. Read this GameMaker [manual page](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/File_Handling/Encoding_And_Hashing/json_stringify.htm) for details.
@@ -187,7 +194,7 @@ If you need to use a version of Python that is not provided with the releases, b
 
 - As both integers and floating-point numbers are treated as `real`s by GameMaker, an integer passed to a function will always be received as a `float` on Python's end. This can be particularly problematic if you're passing a value that must be used as an `int`, e.g. as a list index. In that case, you may need to write an intermediary Python function to convert it back to the appropriate type.
 
-- Similarly, as boolean values are internally stored as 0 and 1, if `true` and `false` are passed normally as arguments to a function, they will, for the reason above, become `float`s in Python (0.0 and 1.0). This can be a huge burden, since those values can't be interpreted as booleans in many cases. The only way to correctly receive the values as `True` and `False` is to call `bool()` on every boolean value you pass as an argument, which will force GameMaker to use its **true** boolean type. Read more about this [here](https://forum.yoyogames.com/index.php?threads/function-is_bool-not-working-properly-on-object-variables.65960/) and [here](https://bugs.yoyogames.com/view.php?id=26211).
+- Prior to GameMaker 2.3.7, boolean values were internally stored as 0 and 1. As such, if `true` and `false` were passed normally as arguments to a function, they would, for the reason above, become `float`s in Python (0.0 and 1.0). This can be a huge burden, since those values can't be interpreted as booleans in many cases. The only way to correctly receive the values as `True` and `False` is to call `bool()` on every boolean value you pass as an argument. This behavior was patched in GameMaker 2.3.7, so you can use `true` and `false` directly if you're using a newer version.
 
 
 ## To-do
@@ -200,8 +207,6 @@ If you need to use a version of Python that is not provided with the releases, b
 
 - Add individual error checking for each Python operation (module import, function call etc.)
 
-- Allow more control over the interpreter lifetime with dedicated functions for initializing and finalizing it
-
 - Add more interaction between Python and GameMaker besides simply running code snippets
 
 - Add support for Mac/Linux and (possibly) older GameMaker versions
@@ -211,6 +216,7 @@ If you need to use a version of Python that is not provided with the releases, b
 
 - The [pybind11](https://github.com/pybind/pybind11) team for making Python/C++ integration such a delightful task.
 - [YellowAfterlife](https://yal.cc/) for creating [GmlCppExtFuncs](https://github.com/YAL-GameMaker-Tools/GmlCppExtFuncs) (which was immensely helpful in understanding how data can be passed to GameMaker extensions via buffers), and for being really helpful in general.
+- [DragoniteSpam](https://www.youtube.com/c/DragoniteSpam) for making the [video](https://youtu.be/yz4q9hcstdw) that brought GameMaker's boolean patch to my attention. :)
 
 
 ---

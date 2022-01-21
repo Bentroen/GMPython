@@ -22,6 +22,9 @@ def get_list():
 def get_dict():
 	return dict(zip("abcdef", range(6)))
 
+def get_a_lot_of_data():
+	return "a" * 4096
+
 def exception():
 	print(2/0)
 

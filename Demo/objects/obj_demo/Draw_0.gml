@@ -70,6 +70,9 @@ if (keyboard_check_pressed(vk_enter)) {
 		}
 	}
 	
+	// Increase internal buffer size
+	python_set_buffer_size(65536);
+	
 	// Run Python file
 	try {
 		result = python_call_function(values[0], values[1], args, kwargs);

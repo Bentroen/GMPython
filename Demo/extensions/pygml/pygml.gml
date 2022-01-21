@@ -26,9 +26,11 @@ return _buf;
 
 var module = argument[0];
 var obj = argument[1];
-var args = argument_count > 2 ? argument[2] : [];
-var kwargs = argument_count > 3 ? argument[3] : undefined;
-kwargs = is_undefined(kwargs) ? {} : kwargs
+var args = argument[2];
+var kwargs = argument[3];
+
+args = !is_undefined(args) ? args : []
+kwargs = !is_undefined(kwargs) ? kwargs : {} 
 
 // Serialize arguments to JSON string
 var args_str = json_stringify(args);

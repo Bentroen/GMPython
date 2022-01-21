@@ -31,6 +31,14 @@ public:
     }
 };
 
+GMEXPORT void _python_initialize() {
+    py::initialize_interpreter();
+}
+
+GMEXPORT void _python_finalize() {
+    py::finalize_interpreter();
+}
+
 GMEXPORT double _python_call_function(char* cbuf) {
     // Set up buffer for writing result
     buffer b(cbuf);
@@ -40,9 +48,6 @@ GMEXPORT double _python_call_function(char* cbuf) {
     char* callable = b.read_string();
     char* args = b.read_string();
     char* kwargs = b.read_string();
-
-    // Initialize Python interpreter
-    py::scoped_interpreter guard{};
     
     try {
         // Load JSON module for serializing and parsing args/result

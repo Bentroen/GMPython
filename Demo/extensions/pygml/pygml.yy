@@ -30,12 +30,16 @@
         {"name":"python_call_function","path":"extensions/pygml/pygml.yy",},
         {"name":"_python_prepare_buffer","path":"extensions/pygml/pygml.yy",},
       ],"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMExtensionFile",},
-    {"filename":"pygml.dll","origname":"","init":"","final":"","kind":1,"uncompress":false,"functions":[
+    {"filename":"pygml.dll","origname":"","init":"_python_initialize","final":"_python_finalize","kind":1,"uncompress":false,"functions":[
         {"externalName":"_python_call_function","kind":1,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
           ],"resourceVersion":"1.0","name":"_python_call_function","tags":[],"resourceType":"GMExtensionFunction",},
+        {"externalName":"_python_initialize","kind":1,"help":"","hidden":false,"returnType":1,"argCount":0,"args":[],"resourceVersion":"1.0","name":"_python_initialize","tags":[],"resourceType":"GMExtensionFunction",},
+        {"externalName":"_python_finalize","kind":1,"help":"","hidden":false,"returnType":1,"argCount":0,"args":[],"resourceVersion":"1.0","name":"_python_finalize","tags":[],"resourceType":"GMExtensionFunction",},
       ],"constants":[],"ProxyFiles":[],"copyToTargets":-1,"order":[
         {"name":"_python_call_function","path":"extensions/pygml/pygml.yy",},
+        {"name":"_python_initialize","path":"extensions/pygml/pygml.yy",},
+        {"name":"_python_finalize","path":"extensions/pygml/pygml.yy",},
       ],"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMExtensionFile",},
     {"filename":"python39.dll","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[],"constants":[],"ProxyFiles":[],"copyToTargets":-1,"order":[],"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMExtensionFile",},
     {"filename":"python39.zip","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[],"constants":[],"ProxyFiles":[],"copyToTargets":-1,"order":[],"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMExtensionFile",},
